@@ -8,111 +8,88 @@ import java.util.List;
  * @date 2024/02/24 19:51
  **/
 public class builder {
-    // 抽象建造者接口
-    interface Builder {
-        void buildPartA();
-        void buildPartB();
-        void buildPartC();
-        Product getResult();
-    }
+    public class Computer {
+        private String HDD;
+        private String RAM;
 
-    // 具体建造者类1
-    class ConcreteBuilder1 implements Builder {
-        private Product product = new Product();
+        // 可选参数
+        private boolean isGraphicsCardEnabled;
+        private boolean isBluetoothEnabled;
 
-        @Override
-        public void buildPartA() {
-            product.add("PartA1");
+        public String getHDD() {
+            return HDD;
         }
 
-        @Override
-        public void buildPartB() {
-            product.add("PartB1");
+        public String getRAM() {
+            return RAM;
         }
 
-        @Override
-        public void buildPartC() {
-            product.add("PartC1");
+        public boolean isGraphicsCardEnabled() {
+            return isGraphicsCardEnabled;
         }
 
-        @Override
-        public Product getResult() {
-            return product;
-        }
-    }
-
-    // 具体建造者类2
-    class ConcreteBuilder2 implements Builder {
-        private Product product = new Product();
-
-        @Override
-        public void buildPartA() {
-            product.add("PartA2");
+        public boolean isBluetoothEnabled() {
+            return isBluetoothEnabled;
         }
 
-        @Override
-        public void buildPartB() {
-            product.add("PartB2");
+        private Computer(ComputerBuilder builder) {
+            this.HDD = builder.HDD;
+            this.RAM = builder.RAM;
+            this.isGraphicsCardEnabled = builder.isGraphicsCardEnabled;
+            this.isBluetoothEnabled = builder.isBluetoothEnabled;
         }
 
-        @Override
-        public void buildPartC() {
-            product.add("PartC2");
-        }
+        //Builder Class
+        public static class ComputerBuilder {
 
-        @Override
-        public Product getResult() {
-            return product;
-        }
-    }
+            // 必要参数
+            private String HDD;
+            private String RAM;
 
-    // 指挥者类
-    class Director {
-        private Builder builder;
+            // 可选参数
+            private boolean isGraphicsCardEnabled;
+            private boolean isBluetoothEnabled;
 
-        public Director(Builder builder) {
-            this.builder = builder;
-        }
+            public ComputerBuilder(String hdd, String ram){
+                this.HDD = hdd;
+                this.RAM = ram;
+            }
 
-        public Product construct() {
-            builder.buildPartA();
-            builder.buildPartB();
-            builder.buildPartC();
-            return builder.getResult();
+            public ComputerBuilder setGraphicsCardEnabled(boolean isGraphicsCardEnabled) {
+                this.isGraphicsCardEnabled = isGraphicsCardEnabled;
+                return this;
+            }
+
+            public ComputerBuilder setBluetoothEnabled(boolean isBluetoothEnabled) {
+                this.isBluetoothEnabled = isBluetoothEnabled;
+                return this;
+            }
+
+            public Computer build(){
+                return new builder().new Computer(this);
+            }
+
         }
     }
 
-    // 产品类
-    class Product {
-        private List<String> parts = new ArrayList<>();
-
-        public void add(String part) {
-            parts.add(part);
-        }
-
-        public String toString() {
-            return "Product: " + String.join(", ", parts);
-        }
-    }
 
     // 客户端代码
     public static void main(String[] args) {
-        // 创建指挥者类和具体建造者类
-        Director director = new builder().new Director(new builder().new ConcreteBuilder1());
-        // 使用指挥者类来创建产品
-        Product product1 = director.construct();
-        // 打印产品信息
-        System.out.println(product1);
+        Computer computer = new Computer.ComputerBuilder("500 GB", "16 GB")
+                .setBluetoothEnabled(true)
+                .setGraphicsCardEnabled(true)
+                .build();
 
-        // 创建指挥者类和具体建造者类
-        director = new builder().new Director(new builder().new ConcreteBuilder2());
-        // 使用指挥者类来创建产品
-        Product product2 = director.construct();
-        // 打印产品信息
-        System.out.println(product2);
+        System.out.println("HDD: " + computer.getHDD());
+        System.out.println("RAM: " + computer.getRAM());
+        System.out.println("Graphics Card: " + computer.isGraphicsCardEnabled());
+        System.out.println("Bluetooth: " + computer.isBluetoothEnabled());
 
-//        Product: PartA1, PartB1, PartC1
-//        Product: PartA2, PartB2, PartC2
+
+//      HDD: 500 GB
+//      RAM: 16 GB
+//      Graphics Card: true
+//      Bluetooth: true
     }
 
 }
