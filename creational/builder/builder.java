@@ -50,9 +50,16 @@ public class builder {
             private boolean isGraphicsCardEnabled;
             private boolean isBluetoothEnabled;
 
-            public ComputerBuilder(String hdd, String ram){
+            public ComputerBuilder(){}
+
+            public ComputerBuilder setHdd(String hdd) {
                 this.HDD = hdd;
+                return this;
+            }
+
+            public ComputerBuilder setRAM(String ram) {
                 this.RAM = ram;
+                return this;
             }
 
             public ComputerBuilder setGraphicsCardEnabled(boolean isGraphicsCardEnabled) {
@@ -75,7 +82,9 @@ public class builder {
 
     // 客户端代码
     public static void main(String[] args) {
-        Computer computer = new Computer.ComputerBuilder("500 GB", "16 GB")
+        Computer computer = new Computer.ComputerBuilder()
+                .setHdd("500GB")
+                .setRAM("16GB")
                 .setBluetoothEnabled(true)
                 .setGraphicsCardEnabled(true)
                 .build();

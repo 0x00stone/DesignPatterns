@@ -62,7 +62,12 @@ public class prototype {
         System.out.println(clone1.getName());
         System.out.println(clone2.getName());
 
+        System.out.println(clone1==prototype1);
+        System.out.println(clone2==prototype2);
+
 //        Prototype1
 //        Prototype2
+//        false
+//        false
     }
 }
