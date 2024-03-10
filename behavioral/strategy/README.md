@@ -9,3 +9,32 @@
 
 # 缺点
 + 可扩展性： 策略模式的可扩展性可能有限，因为你可能需要为每个新的算法创建一个新的类。
+
+# 实例
++ package org.springframework.session;
++ SessionIdGenerator sessionIdGenerator可以自定义实现sessionID
+
+```java
+public interface SessionIdGenerator {
+    @NonNull
+    String generate();
+}
+```
+
+```java
+public final class UuidSessionIdGenerator implements SessionIdGenerator {
+    private static final UuidSessionIdGenerator INSTANCE = new UuidSessionIdGenerator();
+
+    private UuidSessionIdGenerator() {
+    }
+
+    @NonNull
+    public String generate() {
+        return UUID.randomUUID().toString();
+    }
+
+    public static UuidSessionIdGenerator getInstance() {
+        return INSTANCE;
+    }
+}
+```
